@@ -11,8 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: -708126855, guid: 4760dfb3c6696e042afb5c7d8358a8e2, type: 3}
   m_Name: GSTU_Config
   m_EditorClassIdentifier: Assembly-CSharp:GoogleSheetsToUnity:GoogleSheetsToUnityConfig
-  CLIENT_ID: 386128723354-oq106dds6butcghjpthfr781o5euq9v7.apps.googleusercontent.com
-  CLIENT_SECRET: j7mGPV8WY0Uj_xt_Zn1x_FT6
-  ACCESS_TOKEN: 4/MmGXN6MSR03DhN2vb6HdxWfRxEE7XYYItdUPdB_pTuk
-  REFRESH_TOKEN: 1/zHS10HDuSlUJ6jE0mRiFHLkMh3RBq0raKRdPMI8SPzk
-  API_Key: AIzaSyCIeL-eKIVD1rdUlQCDmcw26xAZhMCUgkM
+  CLIENT_ID: 
+  CLIENT_SECRET: 
+  ACCESS_TOKEN: 
+  REFRESH_TOKEN: 1/KDQaOgn3jhi2UF6wx4fqvwE6GKvJB5mGnliYP_odAAg
+  API_Key: 

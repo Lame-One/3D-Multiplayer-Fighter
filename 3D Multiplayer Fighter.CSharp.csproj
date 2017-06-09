@@ -99,11 +99,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Google Sheets To Unity\Animal Example\Scripts\Animal.cs" />
-    <Compile Include="Assets\Google Sheets To Unity\Animal Example\Scripts\AnimalContainer.cs" />
-    <Compile Include="Assets\Google Sheets To Unity\Animal Example\Scripts\AnimalExampleHolder.cs" />
-    <Compile Include="Assets\Google Sheets To Unity\Animal Example\Scripts\AnimalManager.cs" />
-    <Compile Include="Assets\Google Sheets To Unity\Animal Example\Scripts\PublicSheetExample.cs" />
     <Compile Include="Assets\Scripts\Attack.cs" />
     <Compile Include="Assets\Scripts\BigHitGuy.cs" />
     <Compile Include="Assets\Scripts\CameraFollow.cs" />

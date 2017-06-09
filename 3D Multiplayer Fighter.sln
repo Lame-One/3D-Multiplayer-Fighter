@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3D Multiplayer Fighter.CSharp", "3D Multiplayer Fighter.CSharp.csproj", "{3100D516-A8FD-5833-7057-A3F7F9A2555C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3D Multiplayer Fighter.CSharp.Editor", "3D Multiplayer Fighter.CSharp.Editor.csproj", "{C3C63422-8280-937C-F684-42512AE27123}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,10 +13,6 @@ Global
 		{3100D516-A8FD-5833-7057-A3F7F9A2555C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3100D516-A8FD-5833-7057-A3F7F9A2555C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3100D516-A8FD-5833-7057-A3F7F9A2555C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C3C63422-8280-937C-F684-42512AE27123}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3C63422-8280-937C-F684-42512AE27123}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C3C63422-8280-937C-F684-42512AE27123}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C3C63422-8280-937C-F684-42512AE27123}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

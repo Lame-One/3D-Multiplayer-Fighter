@@ -1,8 +1,8 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using GoogleSheetsToUnity;
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -11,84 +11,148 @@ using UnityEditor;
 
 public abstract class Character : MonoBehaviour
 {
-	
+
 	public string charName;
-	public Attack nW, nS, fW, fS, sW, sS, bW, bS, nWA, nSA, fWA, fSA, sWA, sSA, bWA, bSA, nWS, nSS, fWS, fSS, sWS, sSS, bWS, bSS, nWAS, nSAS, fWAS, fSAS, sWAS, sSAS, bWAS, bSAS;
-	public virtual void standardAttack(Attack atk)
+	protected DefaultPlayer thisPlayer;
+	public Attack nW, nS, fW, fS, sW, sS, bW, bS, nWA, nSA, fWA, fSA, sWA, sSA, bWA, bSA, nSp, fSp, sSp, bSp, nASp, fASp, sASp, bASp;
+	public List<HitBox> attackQueue;
+	public virtual void Start()
 	{
-		
-		GetComponent<DefaultPlayer>().setStun(atk.lag);
-		GameObject newHitBox = Instantiate(atk.HB, this.transform.forward + this.transform.position, this.transform.rotation);
-		NetworkServer.Spawn(newHitBox);
-		Destroy(newHitBox, atk.duration + atk.delay);
-		HitBox thisHB = newHitBox.GetComponent<HitBox>();
-		thisHB.creator = this.gameObject;
-		thisHB.setup(atk);
+		thisPlayer = GetComponent<DefaultPlayer>();
+	}
+
+	public virtual void Update()
+	{
+		//Giant block just checking all the inputs. Currently: Face buttons, left joystick, and the right trigger (no left, because maybe targeting?)
+		if (Input.GetAxis("Left Joy X") !=0 || Input.GetAxis("Left Joy Y") != 0 || 
+			Input.GetKeyDown(KeyCode.JoystickButton0) || Input.GetKeyDown(KeyCode.JoystickButton1) || 
+			Input.GetKeyDown(KeyCode.JoystickButton2) || Input.GetKeyDown(KeyCode.JoystickButton3) || 
+			Input.GetAxis("Right Trigger") != 0)
+		{
+			DidSomething();
+		}
+	}
+
+	public virtual void DidSomething()
+	{
 
 	}
-	public virtual void neutralWeakAttack()
+	
+	public virtual void Cancel()
 	{
-		standardAttack(nW);
+		foreach (HitBox hb in attackQueue)
+		{
+			hb.GetComponent<HitBox>().Cancel();
+		}
+		attackQueue.Clear();
 	}
-	public virtual void neutralStrongAttack()
+	public virtual HitBox StandardAttack(Attack atk)
 	{
-		standardAttack(nS);
+		thisPlayer.SetStun(atk.lag);
+		GameObject newHitBox = Instantiate(atk.HB, this.transform.forward + this.transform.position, this.transform.rotation);
+		NetworkServer.Spawn(newHitBox);
+		Destroy(newHitBox, atk.hbDuration + atk.delay);
+		HitBox thisHB = newHitBox.GetComponent<HitBox>();
+		thisHB.creator = this.gameObject;
+		thisHB.Setup(atk);
+		attackQueue.Add(thisHB);
+		return (thisHB);
 	}
-	public virtual void forwardWeakAttack()
+	public virtual void NeutralWeakAttack()
 	{
-		standardAttack(fW);
+		StandardAttack(nW);
 	}
-	public virtual void forwardStrongAttack()
+	public virtual void NeutralStrongAttack()
 	{
-		standardAttack(fS);
+		StandardAttack(nS);
 	}
-	public virtual void sideWeakAttack()
+	public virtual void ForwardWeakAttack()
 	{
-		standardAttack(sW);
+		StandardAttack(fW);
 	}
-	public virtual void sideStrongAttack()
+	public virtual void ForwardStrongAttack()
 	{
-		standardAttack(sS);
+		StandardAttack(fS);
 	}
-	public virtual void backWeakAttack()
+	public virtual void SideWeakAttack()
 	{
-		standardAttack(bW);
+		StandardAttack(sW);
 	}
-	public virtual void backStrongAttack()
+	public virtual void SideStrongAttack()
 	{
-		standardAttack(bS);
+		StandardAttack(sS);
 	}
-	public virtual void neutralWeakAirAttack()
+	public virtual void BackWeakAttack()
 	{
-		standardAttack(nWA);
+		StandardAttack(bW);
 	}
-	public virtual void neutralStrongAirAttack()
+	public virtual void BackStrongAttack()
 	{
-		standardAttack(nSA);
+		StandardAttack(bS);
 	}
-	public virtual void forwardWeakAirAttack()
+	public virtual void NeutralWeakAirAttack()
 	{
-		standardAttack(fWA);
+		StandardAttack(nWA);
 	}
-	public virtual void forwardStrongAirAttack()
+	public virtual void NeutralStrongAirAttack()
 	{
-		standardAttack(fSA);
+		StandardAttack(nSA);
 	}
-	public virtual void sideWeakAirAttack()
+	public virtual void ForwardWeakAirAttack()
 	{
-		standardAttack(sWA);
+		StandardAttack(fWA);
 	}
-	public virtual void sideStrongAirAttack()
+	public virtual void ForwardStrongAirAttack()
 	{
-		standardAttack(sSA);
+		StandardAttack(fSA);
 	}
-	public virtual void backWeakAirAttack()
+	public virtual void SideWeakAirAttack()
 	{
-		standardAttack(bWA);
+		StandardAttack(sWA);
 	}
-	public virtual void backStrongAirAttack()
+	public virtual void SideStrongAirAttack()
 	{
-		standardAttack(bSA);
+		StandardAttack(sSA);
+	}
+	public virtual void BackWeakAirAttack()
+	{
+		StandardAttack(bWA);
+	}
+	public virtual void BackStrongAirAttack()
+	{
+		StandardAttack(bSA);
+	}
+	public virtual void NeutralSpecial()
+	{
+		StandardAttack(nSp);
+	}
+	public virtual void ForwardSpecial()
+	{
+		StandardAttack(fSp);
+	}
+	public virtual void SideSpecial()
+	{
+		StandardAttack(sSp);
+	}
+	public virtual void BackSpecial()
+	{
+		StandardAttack(bSp);
+	}
+	public virtual void NeutralAirSpecial()
+	{
+		NeutralSpecial();
+	}
+	public virtual void ForwardAirSpecial()
+	{
+		ForwardSpecial();
+	}
+	public virtual void SideAirSpecial()
+	{
+		SideSpecial();
+	}
+	public virtual void BackAirSpecial()
+	{
+		BackSpecial();
 	}
 
 #if UNITY_EDITOR
@@ -125,171 +189,130 @@ public abstract class Character : MonoBehaviour
 				{
 					case "Neutral Weak":
 						{
-							c.nW = setAttack(rData, c.nW);
+							c.nW = SetAttack(rData, c.nW);
 							break;
 						}
 					case "Neutral Strong":
 						{
-							c.nS = setAttack(rData, c.nS);
+							c.nS = SetAttack(rData, c.nS);
 							break;
 						}
 					case "Forward Weak":
 						{
-							c.fW = setAttack(rData, c.fW);
+							c.fW = SetAttack(rData, c.fW);
 							break;
 						}
 					case "Forward Strong":
 						{
-							c.fS = setAttack(rData, c.fS);
+							c.fS = SetAttack(rData, c.fS);
 							break;
 						}
 					case "Side Weak":
 						{
-							c.sW = setAttack(rData, c.sW);
+							c.sW = SetAttack(rData, c.sW);
 							break;
 						}
 					case "Side Strong":
 						{
-							c.sS = setAttack(rData, c.sS);
+							c.sS = SetAttack(rData, c.sS);
 							break;
 						}
 					case "Back Weak":
 						{
-							c.bW = setAttack(rData, c.bW);
+							c.bW = SetAttack(rData, c.bW);
 							break;
 						}
 					case "Back Strong":
 						{
-							c.bS = setAttack(rData, c.bS);
+							c.bS = SetAttack(rData, c.bS);
 							break;
 						}
 					case "Neutral Weak Air":
 						{
-							c.nWA = setAttack(rData, c.nWA);
+							c.nWA = SetAttack(rData, c.nWA);
 							break;
 						}
 					case "Neutral Strong Air":
 						{
-							c.nSA = setAttack(rData, c.nSA);
+							c.nSA = SetAttack(rData, c.nSA);
 							break;
 						}
 					case "Forward Weak Air":
 						{
-							c.fWA = setAttack(rData, c.fWA);
+							c.fWA = SetAttack(rData, c.fWA);
 							break;
 						}
 					case "Forward Strong Air":
 						{
-							c.fSA = setAttack(rData, c.fSA);
+							c.fSA = SetAttack(rData, c.fSA);
 							break;
 						}
 					case "Side Weak Air":
 						{
-							c.sWA = setAttack(rData, c.sWA);
+							c.sWA = SetAttack(rData, c.sWA);
 							break;
 						}
 					case "Side Strong Air":
 						{
-							c.sSA = setAttack(rData, c.sSA);
+							c.sSA = SetAttack(rData, c.sSA);
 							break;
 						}
 					case "Back Weak Air":
 						{
-							c.bWA = setAttack(rData, c.bWA);
+							c.bWA = SetAttack(rData, c.bWA);
 							break;
 						}
 					case "Back Strong Air":
 						{
-							c.bSA = setAttack(rData, c.bSA);
+							c.bSA = SetAttack(rData, c.bSA);
 							break;
 						}
-					case "Neutral Weak Special":
+					case "Neutral Special":
 						{
-							c.nW = setAttack(rData, c.nWS);
+							c.nSp = SetAttack(rData, c.nSp);
 							break;
 						}
-					case "Neutral Strong Special":
+					case "Forward Special":
 						{
-							c.nS = setAttack(rData, c.nSS);
+							c.fSp = SetAttack(rData, c.fSp);
 							break;
 						}
-					case "Forward Weak Special":
+					case "Side Special":
 						{
-							c.fW = setAttack(rData, c.fWS);
+							c.sSp = SetAttack(rData, c.sSp);
 							break;
 						}
-					case "Forward Strong Special":
+					case "Back Special":
 						{
-							c.fS = setAttack(rData, c.fSS);
+							c.bSp = SetAttack(rData, c.bSp);
 							break;
 						}
-					case "Side Weak Special":
+					case "Neutral Air Special":
 						{
-							c.sW = setAttack(rData, c.sWS);
+							c.nASp = SetAttack(rData, c.nASp);
 							break;
 						}
-					case "Side Strong Special":
+					case "Forward Air Special":
 						{
-							c.sS = setAttack(rData, c.sSS);
+							c.fASp = SetAttack(rData, c.fASp);
 							break;
 						}
-					case "Back Weak Special":
+					case "Side Air Special":
 						{
-							c.bW = setAttack(rData, c.bWS);
+							c.sASp = SetAttack(rData, c.sASp);
 							break;
 						}
-					case "Back Strong Special":
+					case "Back Air Special":
 						{
-							c.bS = setAttack(rData, c.bSS);
+							c.bASp = SetAttack(rData, c.bASp);
 							break;
 						}
-					case "Neutral Weak Air Special":
-						{
-							c.nWA = setAttack(rData, c.nWAS);
-							break;
-						}
-					case "Neutral Strong Air Special":
-						{
-							c.nSA = setAttack(rData, c.nSAS);
-							break;
-						}
-					case "Forward Weak Air Special":
-						{
-							c.fWA = setAttack(rData, c.fWAS);
-							break;
-						}
-					case "Forward Strong Air Special":
-						{
-							c.fSA = setAttack(rData, c.fSAS);
-							break;
-						}
-					case "Side Weak Air Special":
-						{
-							c.sWA = setAttack(rData, c.sWAS);
-							break;
-						}
-					case "Side Strong Air Special":
-						{
-							c.sSA = setAttack(rData, c.sSAS);
-							break;
-						}
-					case "Back Weak Air Special":
-						{
-							c.bWA = setAttack(rData, c.bWAS);
-							break;
-						}
-					case "Back Strong Air Special":
-						{
-							c.bSA = setAttack(rData, c.bSAS);
-							break;
-						}
-				}	
+				}
 			}
-
 			EditorUtility.SetDirty(target);
 		}
 
-		Attack setAttack(RowData rData, Attack atk)
+		Attack SetAttack(RowData rData, Attack atk)
 		{
 			if (rData != null)
 			{
@@ -321,7 +344,7 @@ public abstract class Character : MonoBehaviour
 							}
 						case "duration":
 							{
-								atk.duration = float.Parse(rData.cells[i].value);
+								atk.hbDuration = float.Parse(rData.cells[i].value);
 								break;
 							}
 						case "lag":
@@ -350,12 +373,12 @@ public abstract class Character : MonoBehaviour
 			{
 				Debug.Log("No Data Found");
 			}
-			if(atk.HB == null)
+			if (atk.HB == null)
 			{
 				atk.HB = c.nW.HB;
 			}
 			return (atk);
 		}
 	}
-}
 #endif
+}

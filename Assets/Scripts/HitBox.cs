@@ -13,7 +13,7 @@ public class HitBox : MonoBehaviour {
 	void Start () {
 	}
 	
-	public void setup(Attack incAtk)
+	public void Setup(Attack incAtk)
 	{
 		atk = incAtk;
 		knockDir = this.transform.forward;
@@ -29,11 +29,20 @@ public class HitBox : MonoBehaviour {
 			GetComponent<Renderer>().enabled = true;
 		}
 	}
+
+	private void OnDestroy()
+	{
+	}
+	public void Cancel()
+	{
+		Destroy(this);
+		creator.GetComponent<Character>().attackQueue.Remove(this);
+	}
 	void OnTriggerEnter(Collider other)
 	{
 		if(other.gameObject != creator && other.CompareTag("Player"))
 		{
-			other.gameObject.GetComponent<DefaultPlayer>().getHit(atk.damage, atk.knockback, knockDir, atk.stun);
+			other.gameObject.GetComponent<DefaultPlayer>().GetHit(atk.damage, atk.knockback, knockDir, atk.stun);
 		}
 	}
 
