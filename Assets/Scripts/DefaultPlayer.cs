@@ -60,7 +60,17 @@ public class DefaultPlayer : NetworkBehaviour
 			isStunned = false;
 			isDashing = false;
 		}
+
 		isArmored =  Time.time < superArmorDone;
+		if (Input.GetAxis("Right Trigger") != 0 && grounded)
+		{
+			isBlocking = true;
+			return;
+		}
+		else
+		{
+			isBlocking = false;
+		}
 		if (Input.GetKeyDown(KeyCode.F))
 		{
 			if (targetting)
@@ -281,6 +291,10 @@ public class DefaultPlayer : NetworkBehaviour
 		{
 			transform.Rotate(0, Input.GetAxis("Right Joy X") * rotSpeed, 0);
 		}
+		if (isBlocking)
+		{
+			return;
+		}
 		if (!grounded)
 		{
 			thisRigidbody.AddForce(Vector3.down * gravity);
@@ -322,9 +336,9 @@ public class DefaultPlayer : NetworkBehaviour
 		}
 	}
 
-	public void GetHit(float dmgTaken, float knockback, Vector3 direction, float stun)
+	public void GetHit(float dmgTaken, float knockback, Vector3 direction, float stun, bool isBlockable)
 	{
-		if(!isBlocking)
+		if(!isBlocking || !isBlockable)
 		{
 			curDam += dmgTaken;
 			if (!isArmored)

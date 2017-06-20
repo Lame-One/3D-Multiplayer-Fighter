@@ -8,6 +8,7 @@ public class HitBox : MonoBehaviour {
 	public GameObject creator;
 	public Vector3 knockDir;
 	private float timeOn;
+	public bool isBlockable = true;
 
 	// Use this for initialization
 	void Start () {
@@ -42,7 +43,7 @@ public class HitBox : MonoBehaviour {
 	{
 		if(other.gameObject != creator && other.CompareTag("Player"))
 		{
-			other.gameObject.GetComponent<DefaultPlayer>().GetHit(atk.damage, atk.knockback, knockDir, atk.stun);
+			other.gameObject.GetComponent<DefaultPlayer>().GetHit(atk.damage, atk.knockback, knockDir, atk.stun, isBlockable);
 		}
 	}
 
